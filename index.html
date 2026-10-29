@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CotizApp</title>
+  <link rel="icon" type="image/jpeg" href="/logokilian.jpeg">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    * { box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
+    
+    body { 
+      margin: 0; 
+      padding: 0; 
+      background-image: url('Cotizador.jpeg'); 
+      background-size: cover; 
+      background-position: center; 
+      background-repeat: no-repeat;
+      display: flex; 
+      justify-content: center; 
+      align-items: center;     
+      min-height: 100vh; 
+    }
+
+    /* LOGIN CON CAJA SÓLIDA CENTRADA */
+    #login-screen {
+      background: #ffffff; 
+      padding: 40px 35px; 
+      border-radius: 12px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); 
+      width: 100%; 
+      max-width: 390px; 
+      text-align: center;
+    }
+    #login-screen h2 { margin-bottom: 20px; color: #333; font-size: 22px; }
+    .login-group { margin-bottom: 15px; text-align: left; }
+    .login-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 13px; color: #333; }
+    .login-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+    .btn-login { background: #004080; color: white; width: 100%; padding: 12px; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    .btn-login:hover { background: #003366; }
+    .error-msg { color: #dc3545; font-size: 13px; margin-top: 10px; display: none; }
+
+    /* EDITOR & TABS */
+    #editor-screen { display: none; width: 100%; max-width: 1350px; padding: 20px; background: #f4f6f9; min-height: 100vh; position: absolute; top: 0; left: 0; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; }
+    .nav-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+    .tab-btn { padding: 8px 16px; border: none; background: #e9ecef; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; color: #495057; }
+    .tab-btn.active { background: #004080; color: white; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .container { display: flex; flex-wrap: wrap; gap: 20px; }
+    .form-panel { flex: 1; min-width: 400px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-height: 85vh; overflow-y: auto; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 13px; color: #333; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+    
+    .item-row { display: flex; gap: 6px; margin-bottom: 8px; align-items: center; }
+    .item-row input { padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+    
+    .btn { padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; }
+    .btn-add { background: #28a745; color: white; margin-top: 5px; width: 100%; font-size: 12px; }
+    .btn-remove { background: #dc3545; color: white; padding: 6px 10px; }
+    .btn-logout { background: #6c757d; color: white; padding: 6px 12px; border-radius: 4px; border: none; cursor: pointer; font-weight: bold; }
+
+    .btn-accion { background: #004080; color: white; width: 100%; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; border: none; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,64,128,0.2); }
+    .btn-accion:hover { background: #003366; }
+
+    .preview-panel { flex: 1.3; min-width: 400px; }
+    
+    /* DOCUMENTO PDF / VISTA PREVIA */
+    .documento-pdf { background: white; padding: 30px; border: 1px solid #e0e0e0; border-radius: 6px; color: #333; }
+    .pdf-header { display: flex; justify-content: space-between; border-bottom: 2px solid #004080; padding-bottom: 15px; margin-bottom: 20px; }
+    .empresa-info h1 { font-size: 15px; margin: 0; color: #004080; }
+    .empresa-info p { margin: 2px 0; font-size: 10px; color: #555; }
+    .cotizacion-titulo-box { text-align: right; }
+    .cotizacion-titulo-box h2 { margin: 0; color: #333; font-size: 18px; }
+    .cotizacion-titulo-box p { margin: 3px 0; font-size: 12px; font-weight: bold; color: #666; }
+
+    .datos-cliente-box { 
+      background: #f8f9fa; 
+      padding: 12px 15px; 
+      border-radius: 4px; 
+      margin-bottom: 20px; 
+      font-size: 12px; 
+      display: grid; 
+      grid-template-columns: 1.2fr 0.8fr; 
+      gap: 10px; 
+      border-left: 5px solid #004080;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    
+    table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 20px; }
+    th, td { border: 1px solid #d0d0d0; padding: 7px; text-align: center; }
+    .header-blue { background-color: #004080; color: white; font-weight: bold; text-transform: uppercase; font-size: 12px; }
+    .header-section { background-color: #e9ecef; font-weight: bold; text-align: left; color: #333; }
+    .row-gray { background-color: #f1f3f5; font-weight: bold; }
+    .total-row { background-color: #dbe4f0; font-weight: bold; font-size: 13px; color: #003366; }
+    .text-left { text-align: left; }
+    .text-right { text-align: right; }
+
+    .condiciones-box { font-size: 10px; color: #555; margin-bottom: 30px; border-top: 1px solid #eee; padding-top: 10px; }
+    .firmas-container { display: flex; justify-content: space-between; margin-top: 30px; }
+    .tabla-historial { width: 100%; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .tabla-historial th, .tabla-historial td { padding: 10px; border: 1px solid #dee2e6; font-size: 12px; text-align: center; }
+    .tabla-historial th { background-color: #004080; color: white; }
+    .badge { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+    .badge-pendiente { background-color: #ffc107; color: #212529; }
+    .badge-aprobado { background-color: #28a745; color: white; }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN CENTRADO -->
+  <div id="login-screen">
+    <h2>🔐 Iniciar Sesión</h2>
+    <div class="login-group">
+      <label>Usuario:</label>
+      <input type="text" id="userInput" placeholder="Ej: operador">
+    </div>
+    <div class="login-group">
+      <label>Contraseña:</label>
+      <input type="password" id="passInput" placeholder="Ej: 123">
+    </div>
+    <button class="btn-login" onclick="verificarLogin()">Ingresar</button>
+    <p id="errorMsg" class="error-msg">Usuario o contraseña incorrectos</p>
+  </div>
+
+  <!-- EDITOR & NAVEGACIÓN -->
+  <div id="editor-screen">
+    <div class="navbar">
+      <div class="nav-tabs">
+        <button class="tab-btn active" onclick="cambiarTab('crear-cot')">➕ Crear Cotización</button>
+        <button class="tab-btn" onclick="cambiarTab('lista-cot')">📋 Cotizaciones Creadas</button>
+        <button class="tab-btn" onclick="cambiarTab('crear-cobro')">💰 Crear Cuenta de Cobro</button>
+        <button class="tab-btn" onclick="cambiarTab('lista-cobros')">📊 Control Contable (Cobros)</button>
+      </div>
+      <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </div>
+
+    <!-- PESTAÑA 1: CREAR COTIZACIÓN -->
+    <div id="crear-cot" class="tab-content active">
+      <div class="container">
+        <div class="form-panel">
+          <h2>🛠️ Datos de la Cotización</h2>
+          <div class="form-group"><label>Cliente / Edificio:</label><input type="text" id="c-cliente" placeholder="Ej: EDIFICIO TORRE CORAL P.H." oninput="actualizarCotizacion()"></div>
+          <div class="form-group"><label>Atención / Contacto:</label><input type="text" id="c-contacto" placeholder="Ej: Administración" oninput="actualizarCotizacion()"></div>
+          <div class="form-group"><label>Título del Trabajo:</label><input type="text" id="c-titulo" placeholder="Ej: MANTENIMIENTO PINTURA SOTANO" oninput="actualizarCotizacion()"></div>
+          <div class="form-group"><label>Fecha:</label><input type="date" id="c-fecha" onchange="actualizarCotizacion()"></div>
+
+          <!-- SECCIÓN 1: MANO DE OBRA -->
+          <h3 style="margin-top: 15px; font-size: 14px; color: #004080; border-bottom: 2px solid #004080; padding-bottom: 4px;">1. Mano de Obra (Solo Costo Total)</h3>
+          <div id="mano-obra-container"></div>
+          <button class="btn btn-add" onclick="agregarManoDeObra()">+ Agregar Mano de Obra</button>
+
+          <!-- SECCIÓN 2: MATERIALES -->
+          <h3 style="margin-top: 20px; font-size: 14px; color: #004080; border-bottom: 2px solid #004080; padding-bottom: 4px;">2. Materiales (Cantidad, V. Unitario y Total)</h3>
+          <div id="materiales-container"></div>
+          <button class="btn btn-add" onclick="agregarMaterial()">+ Agregar Material</button>
+
+          <h3 style="margin-top: 25px; font-size: 14px;">Costos Indirectos (AIU)</h3>
+          <div style="display: flex; gap: 8px;">
+            <div class="form-group" style="flex:1;"><label>Admin %</label><input type="number" id="c-pAdmin" value="5" oninput="actualizarCotizacion()"></div>
+            <div class="form-group" style="flex:1;"><label>Imprev %</label><input type="number" id="c-pImprev" value="7" oninput="actualizarCotizacion()"></div>
+            <div class="form-group" style="flex:1;"><label>Util %</label><input type="number" id="c-pUtil" value="3" oninput="actualizarCotizacion()"></div>
+          </div>
+          <div class="form-group">
+            <label>IVA sobre Utilidad % (Establecido por Ley)</label>
+            <input type="number" id="c-pIva" value="19" readonly style="background-color: #e9ecef; font-weight: bold; cursor: not-allowed;">
+          </div>
+        </div>
+
+        <div class="preview-panel">
+          <button class="btn-accion" onclick="guardarYDescargarCotizacion()">💾 Guardar en BD y Descargar PDF</button>
+          <div id="cotizacion-pdf" class="documento-pdf">
+            <div class="pdf-header">
+              <div class="empresa-info">
+                <h1>KILIAN TECNOLOGÍA S.A.S.</h1>
+                <p>NIT: 901.123.456-7</p>
+                <p>Soluciones Integrales de Mantenimiento</p>
+              </div>
+              <div class="cotizacion-titulo-box">
+                <h2>COTIZACIÓN</h2>
+                <p id="lblNumCot">COT-2026-000</p>
+                <p id="lblFechaCot">Fecha: --</p>
+              </div>
+            </div>
+
+            <div class="datos-cliente-box">
+              <div>
+                <strong>CLIENTE:</strong> <span id="p-cliente">--</span><br>
+                <strong>ATENCIÓN:</strong> <span id="p-contacto">--</span>
+              </div>
+              <div>
+                <strong>ASUNTO:</strong> <span id="p-titulo">--</span>
+              </div>
+            </div>
+
+            <table>
+              <thead>
+                <tr class="header-blue">
+                  <th colspan="5" id="p-titulotabla">MANTENIMIENTO</th>
+                </tr>
+                <tr>
+                  <th style="width: 40%;">DESCRIPCIÓN</th>
+                  <th style="width: 10%;">UNID</th>
+                  <th style="width: 10%;">CANT</th>
+                  <th style="width: 20%;">V. UNITARIO</th>
+                  <th style="width: 20%;">V. TOTAL</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-body">
+              </tbody>
+            </table>
+
+            <div class="condiciones-box">
+              <p><strong>Condiciones Comerciales:</strong></p>
+              <ul>
+                <li>Validez de la oferta: 30 días calendario.</li>
+                <li>Forma de pago: Según acuerdo previo o presentación de cuenta de cobro.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>

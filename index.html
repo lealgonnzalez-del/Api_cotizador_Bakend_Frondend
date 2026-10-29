@@ -13,7 +13,7 @@
     body { 
       margin: 0; 
       padding: 0; 
-      background-image: url('Cotizador.jpeg'); 
+      background-image: url('/Cotizador.jpeg'); 
       background-size: cover; 
       background-position: center; 
       background-repeat: no-repeat;
@@ -165,52 +165,44 @@
           <h3 style="margin-top: 25px; font-size: 14px;">Costos Indirectos (AIU)</h3>
           <div style="display: flex; gap: 8px;">
             <div class="form-group" style="flex:1;"><label>Admin %</label><input type="number" id="c-pAdmin" value="5" oninput="actualizarCotizacion()"></div>
-            <div class="form-group" style="flex:1;"><label>Imprev %</label><input type="number" id="c-pImprev" value="7" oninput="actualizarCotizacion()"></div>
-            <div class="form-group" style="flex:1;"><label>Util %</label><input type="number" id="c-pUtil" value="3" oninput="actualizarCotizacion()"></div>
+            <div class="form-group" style="flex:1;"><label>Imprev %</label><input type="number" id="c-pImprev" value="2" oninput="actualizarCotizacion()"></div>
+            <div class="form-group" style="flex:1;"><label>Util %</label><input type="number" id="c-pUtil" value="5" oninput="actualizarCotizacion()"></div>
           </div>
-          <div class="form-group">
-            <label>IVA sobre Utilidad % (Establecido por Ley)</label>
-            <input type="number" id="c-pIva" value="19" readonly style="background-color: #e9ecef; font-weight: bold; cursor: not-allowed;">
-          </div>
+
+          <button class="btn-accion" style="margin-top:20px;" onclick="guardarYDescargarCotizacion()">💾 Guardar y Descargar PDF</button>
         </div>
 
         <div class="preview-panel">
-          <button class="btn-accion" onclick="guardarYDescargarCotizacion()">💾 Guardar en BD y Descargar PDF</button>
           <div id="cotizacion-pdf" class="documento-pdf">
             <div class="pdf-header">
               <div class="empresa-info">
-                <h1>KILIAN TECNOLOGÍA S.A.S.</h1>
-                <p>NIT: 901.123.456-7</p>
-                <p>Soluciones Integrales de Mantenimiento</p>
+                <h1>EUCLIDES GONZALEZ LEAL</h1>
+                <p>NIT / C.C. 1.018.435.981-0</p>
+                <p>Servicios de Ingeniería y Mantenimiento</p>
               </div>
               <div class="cotizacion-titulo-box">
                 <h2>COTIZACIÓN</h2>
-                <p id="lblNumCot">COT-2026-000</p>
-                <p id="lblFechaCot">Fecha: --</p>
+                <p id="lblNumCot">COT-2026-001</p>
+                <p id="lblFechaCot">Fecha: </p>
               </div>
             </div>
 
             <div class="datos-cliente-box">
               <div>
-                <strong>CLIENTE:</strong> <span id="p-cliente">--</span><br>
-                <strong>ATENCIÓN:</strong> <span id="p-contacto">--</span>
+                <p><strong>CLIENTE:</strong> <span id="p-cliente">EDIFICIO TORRE CORAL P.H.</span></p>
+                <p><strong>ATENCIÓN:</strong> <span id="p-contacto">Administración</span></p>
               </div>
               <div>
-                <strong>ASUNTO:</strong> <span id="p-titulo">--</span>
+                <p><strong>PROYECTO:</strong> <span id="p-titulo">MANTENIMIENTO</span></p>
               </div>
             </div>
 
             <table>
               <thead>
                 <tr class="header-blue">
-                  <th colspan="5" id="p-titulotabla">MANTENIMIENTO</th>
-                </tr>
-                <tr>
-                  <th style="width: 40%;">DESCRIPCIÓN</th>
-                  <th style="width: 10%;">UNID</th>
-                  <th style="width: 10%;">CANT</th>
-                  <th style="width: 20%;">V. UNITARIO</th>
-                  <th style="width: 20%;">V. TOTAL</th>
+                  <th colspan="3">DESCRIPCIÓN</th>
+                  <th>CANT</th>
+                  <th>VALOR TOTAL</th>
                 </tr>
               </thead>
               <tbody id="tabla-body">
@@ -228,8 +220,162 @@
         </div>
       </div>
     </div>
+
+    <!-- PESTAÑA 2: LISTA DE COTIZACIONES -->
+    <div id="lista-cot" class="tab-content">
+      <h2>📋 Listado de Cotizaciones Guardadas</h2>
+      <button class="btn" style="background:#17a2b8; color:white; margin-bottom: 15px;" onclick="cargarCotizacionesNoAprobadasBD()">Filtrar No Aprobadas</button>
+      <button class="btn" style="background:#6c757d; color:white; margin-bottom: 15px;" onclick="cargarCotizacionesBD()">Mostrar Todas</button>
+      <div style="overflow-x: auto;">
+        <table class="tabla-historial">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Título</th>
+              <th>Fecha</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-cotizaciones-guardadas">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 3: CREAR CUENTA DE COBRO -->
+    <div id="crear-cobro" class="tab-content">
+      <div class="container">
+        <div class="form-panel">
+          <h2>💰 Generar Cuenta de Cobro</h2>
+          <div class="form-group">
+            <label>Seleccionar Cotización Aprobada:</label>
+            <select id="select-cot-aprobada" onchange="cargarDatosCotizacionEnCobro()">
+              <option value="">-- Seleccione --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tipo de Cobro:</label>
+            <select id="cobro-tipo" onchange="actualizarVistaCobroManual()">
+              <option value="Anticipo">Anticipo</option>
+              <option value="Pago Final">Pago Final</option>
+              <option value="Pago Único">Pago Único</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fecha de Emisión:</label>
+            <input type="date" id="cobro-fecha" onchange="actualizarVistaCobroManual()">
+          </div>
+          <div class="form-group">
+            <label>Concepto Detallado:</label>
+            <textarea id="cobro-concepto" rows="4" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; font-size:14px;" oninput="actualizarVistaCobroManual()"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Valor a Cobrar ($):</label>
+            <input type="number" id="cobro-valor" oninput="actualizarVistaCobroManual()">
+            <span id="punteo-cobro" style="font-size: 12px; font-weight: bold; color: #004080;">$ 0</span>
+          </div>
+
+          <button class="btn-accion" style="margin-top:15px;" onclick="guardarYDescargarCuentaCobro()">💾 Guardar y Generar PDF</button>
+        </div>
+
+        <div class="preview-panel">
+          <div id="cuentacobro-pdf" class="documento-pdf">
+            <div class="pdf-header">
+              <div class="empresa-info">
+                <h1>EUCLIDES GONZALEZ LEAL</h1>
+                <p>NIT / C.C. 1.018.435.981-0</p>
+                <p>Servicios de Ingeniería y Mantenimiento</p>
+              </div>
+              <div class="cotizacion-titulo-box">
+                <h2>CUENTA DE COBRO</h2>
+                <p id="lblNumNumCobroPDF">CC-2026-001</p>
+                <p id="lblFechaCobroPDF">Fecha: </p>
+              </div>
+            </div>
+
+            <div class="datos-cliente-box">
+              <div>
+                <p><strong>DEBE A:</strong> EUCLIDES GONZALEZ LEAL</p>
+                <p><strong>CLIENTE:</strong> <span id="cobro-p-cliente">--</span></p>
+              </div>
+              <div>
+                <p><strong>REF. COTIZACIÓN:</strong> <span id="cobro-p-ref">--</span></p>
+                <p><strong>TIPO:</strong> <span id="cobro-p-tipo">Anticipo</span></p>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 25px; font-size: 13px; line-height: 1.6;">
+              <p><strong>Concepto:</strong></p>
+              <p id="cobro-p-concepto" style="background: #f8f9fa; padding: 12px; border-radius: 4px; border: 1px solid #e9ecef;">Seleccione una cotización para ver el detalle del cobro.</p>
+            </div>
+
+            <div style="text-align: right; margin-bottom: 30px; font-size: 16px; font-weight: bold; background: #e9ecef; padding: 12px; border-radius: 4px;">
+              VALOR TOTAL A PAGAR: <span id="cobro-p-valor" style="color: #004080;">$ 0</span>
+            </div>
+
+            <div class="firmas-container" style="margin-top: 50px; display: flex; justify-content: space-between;">
+              <div style="text-align: center; width: 45%;">
+                <div style="border-bottom: 1px solid #333; margin-bottom: 5px; height: 40px;"></div>
+                <p style="margin: 0; font-size: 11px; font-weight: bold;">EUCLIDES GONZALEZ LEAL</p>
+                <p style="margin: 0; font-size: 10px; color: #555;">C.C. 1.018.435.981-0</p>
+              </div>
+              <div style="text-align: center; width: 45%;">
+                <div style="border-bottom: 1px solid #333; margin-bottom: 5px; height: 40px;"></div>
+                <p style="margin: 0; font-size: 11px; font-weight: bold;"><span id="cobro-p-cliente-2">Aprobado / Cliente</span></p>
+                <p style="margin: 0; font-size: 10px; color: #555;">NIT / C.C.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 4: CONTROL CONTABLE (COBROS) -->
+    <div id="lista-cobros" class="tab-content">
+      <h2>📊 Control Contable - Cuentas de Cobro</h2>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div>
+          <button class="btn" style="background:#28a745; color:white;" onclick="cargarCuentasCobroPagadasBD()">Filtrar Pagadas</button>
+          <button class="btn" style="background:#6c757d; color:white; margin-left: 5px;" onclick="cargarCuentasCobroBD()">Mostrar Todas</button>
+        </div>
+        <div style="background: white; padding: 10px 15px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-weight: bold;">
+          Total Recaudado (Pagado): <span id="lbl-total-pagado" style="color: #28a745; font-size: 16px;">$ 0</span>
+        </div>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="tabla-historial">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Concepto</th>
+              <th>Fecha</th>
+              <th>Valor</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-cobros-guardados">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 
+  <!-- MODAL DE DETALLE -->
+  <div id="modal-detalle" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background: white; padding: 25px; border-radius: 8px; width: 100%; max-width: 500px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+      <h3 id="modal-titulo" style="margin-top: 0; color: #004080;">Detalle</h3>
+      <div id="modal-contenido" style="margin-bottom: 20px; font-size: 14px; line-height: 1.5;"></div>
+      <button class="btn" style="background: #6c757d; color: white; width: 100%;" onclick="cerrarModalDetalle()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- Carga del script principal como módulo para Vite -->
   <script type="module" src="/src/app.js"></script>
 </body>
 </html>

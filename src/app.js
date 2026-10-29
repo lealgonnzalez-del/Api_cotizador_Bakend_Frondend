@@ -508,7 +508,6 @@ function calcularTotalCobrosPagados() {
   }
 }
 
-
 function verDetalleCotizacion(cot) {
   document.getElementById('modal-titulo').innerText = `Cotización: ${cot.id}`;
   document.getElementById('modal-contenido').innerHTML = `
@@ -520,7 +519,6 @@ function verDetalleCotizacion(cot) {
   `;
   document.getElementById('modal-detalle').style.display = 'flex';
 }
-
 
 function verDetalleCobro(cobro) {
   document.getElementById('modal-titulo').innerText = `Cuenta de Cobro: ${cobro.id}`;
@@ -535,8 +533,30 @@ function verDetalleCobro(cobro) {
   document.getElementById('modal-detalle').style.display = 'flex';
 }
 
-// Actualización para despliegue
-
 function cerrarModalDetalle() {
   document.getElementById('modal-detalle').style.display = 'none';
 }
+
+// --- EXPOSICIÓN GLOBAL PARA EVITAR ERRORES DE REFERENCIA EN HTML ---
+window.verificarLogin = verificarLogin;
+window.cerrarSesion = cerrarSesion;
+window.cambiarTab = cambiarTab;
+window.agregarManoDeObra = agregarManoDeObra;
+window.eliminarManoDeObra = eliminarManoDeObra;
+window.actualizarMO = actualizarMO;
+window.agregarMaterial = agregarMaterial;
+window.eliminarMat = eliminarMat;
+window.actualizarMat = actualizarMat;
+window.actualizarCotizacion = actualizarCotizacion;
+window.guardarYDescargarCotizacion = guardarYDescargarCotizacion;
+window.verDetalleCotizacion = verDetalleCotizacion;
+window.cambiarEstadoCotizacion = cambiarEstadoCotizacion;
+window.eliminarCotizacion = eliminarCotizacion;
+window.poblarSelectCotizacionesAprobadas = poblarSelectCotizacionesAprobadas;
+window.cargarDatosCotizacionEnCobro = cargarDatosCotizacionEnCobro;
+window.actualizarVistaCobroManual = actualizarVistaCobroManual;
+window.guardarYDescargarCuentaCobro = guardarYDescargarCuentaCobro;
+window.verDetalleCobro = verDetalleCobro;
+window.marcarPagado = marcarPagado;
+window.eliminarCobro = eliminarCobro;
+window.cerrarModalDetalle = cerrarModalDetalle;

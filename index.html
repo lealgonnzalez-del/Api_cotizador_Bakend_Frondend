@@ -9,11 +9,11 @@
   <style>
     * { box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
     
-    /* Fondo aplicado a todo el body de forma centrada y cubriendo la pantalla */
+    /* Fondo aplicado al body de forma centrada y cubriendo la pantalla */
     body { 
       margin: 0; 
       padding: 0; 
-      background-image: url('/Cotizador.jpeg'); 
+      background-image: url('./Cotizador.jpeg'); 
       background-size: cover; 
       background-position: center; 
       background-repeat: no-repeat;
@@ -21,6 +21,7 @@
       justify-content: center; 
       align-items: center; 
       min-height: 100vh; 
+      background-color: #002b5c; 
     }
 
     /* LOGIN CENTRADO SOBRE EL FONDO */
@@ -103,7 +104,7 @@
     .text-right { text-align: right; }
 
     .condiciones-box { font-size: 10px; color: #555; margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 10px; }
-    .firmas-container { display: flex; justify-content: space-between; margin-top: 30px; }
+    .firmas-container { display: flex; justify-content: space-between; margin-top: 20px; }
     .tabla-historial { width: 100%; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
     .tabla-historial th, .tabla-historial td { padding: 10px; border: 1px solid #dee2e6; font-size: 12px; text-align: center; }
     .tabla-historial th { background-color: #004080; color: white; }
@@ -217,15 +218,16 @@
               <p><strong>Condiciones de Pago:</strong> 50% anticipo, 50% contra entrega.</p>
             </div>
 
-            <div class="firmas-container" style="margin-top: 30px; display: flex; justify-content: space-between;">
+            <!-- FIRMA REUBICADA A UNA ALTURA EQUILIBRADA -->
+            <div class="firmas-container" style="margin-top: 15px; display: flex; justify-content: space-between;">
               <div style="text-align: center; width: 45%;">
-                <img src="/Firma EuclidesR.png" alt="Firma" style="height: 45px; object-fit: contain; margin-bottom: -10px; display: block; margin-left: auto; margin-right: auto;">
-                <div style="border-bottom: 1px solid #333; margin-bottom: 5px;"></div>
+                <img src="/Firma EuclidesR.png" alt="Firma" style="height: 42px; object-fit: contain; margin-bottom: -15px; display: block; margin-left: auto; margin-right: auto; position: relative; z-index: 2;">
+                <div style="border-bottom: 1px solid #333; margin-bottom: 5px; width: 100%;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;">Euclides Gonzalez Rodriguez</p>
                 <p style="margin: 0; font-size: 10px; color: #555;">NIT: 77.185015-4</p>
               </div>
               <div style="text-align: center; width: 45%;">
-                <div style="border-bottom: 1px solid #333; margin-top: 35px; margin-bottom: 5px;"></div>
+                <div style="border-bottom: 1px solid #333; margin-top: 27px; margin-bottom: 5px; width: 100%;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;">Aceptado (Cliente):</p>
                 <p style="margin: 0; font-size: 10px; color: #555;">Firma y Sello</p>
               </div>
@@ -308,15 +310,15 @@
             <div style="text-align: right; font-size: 15px; font-weight: bold; margin: 20px 0; background: #dbe4f0; padding: 12px; border-radius: 4px; color: #003366;">
               VALOR TOTAL A COBRAR: <span id="cobro-p-valor">$ 0</span>
             </div>
-            <div class="firmas-container" style="margin-top: 40px; display: flex; justify-content: space-between;">
+            <div class="firmas-container" style="margin-top: 15px; display: flex; justify-content: space-between;">
               <div style="text-align: center; width: 45%;">
-                <img src="/Firma EuclidesR.png" alt="Firma" style="height: 45px; object-fit: contain; margin-bottom: -10px; display: block; margin-left: auto; margin-right: auto;">
-                <div style="border-bottom: 1px solid #333; margin-bottom: 5px;"></div>
+                <img src="/Firma EuclidesR.png" alt="Firma" style="height: 42px; object-fit: contain; margin-bottom: -15px; display: block; margin-left: auto; margin-right: auto; position: relative; z-index: 2;">
+                <div style="border-bottom: 1px solid #333; margin-bottom: 5px; width: 100%;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;">Euclides Gonzalez Rodriguez</p>
                 <p style="margin: 0; font-size: 10px; color: #555;">NIT: 77.185015-4</p>
               </div>
               <div style="text-align: center; width: 45%;">
-                <div style="border-bottom: 1px solid #333; margin-top: 35px; margin-bottom: 5px;"></div>
+                <div style="border-bottom: 1px solid #333; margin-top: 27px; margin-bottom: 5px; width: 100%;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;"><span id="cobro-p-cliente-3">Aprobado / Cliente</span></p>
                 <p style="margin: 0; font-size: 10px; color: #555;">NIT / C.C.</p>
               </div>

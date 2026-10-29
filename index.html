@@ -1,48 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <link rel="manifest" href="manifest.json">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CotizApp</title>
+  <title>CotizApp - Sistema de Cotizaciones y Cuentas de Cobro</title>
   <link rel="icon" type="image/jpeg" href="/logokilian.jpeg">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     * { box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
-    
-    body { 
-      margin: 0; 
-      padding: 0; 
-      background-image: url('/Cotizador.jpeg'); 
-      background-size: cover; 
-      background-position: center; 
-      background-repeat: no-repeat;
-      display: flex; 
-      justify-content: center; 
-      align-items: center;     
-      min-height: 100vh; 
-    }
+    body { margin: 0; padding: 0; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
 
-    /* LOGIN CON CAJA SÓLIDA CENTRADA */
+    /* LOGIN */
     #login-screen {
-      background: #ffffff; 
-      padding: 40px 35px; 
-      border-radius: 12px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); 
-      width: 100%; 
-      max-width: 390px; 
-      text-align: center;
+      background: white; padding: 30px; border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 100%; max-width: 380px; text-align: center;
     }
-    #login-screen h2 { margin-bottom: 20px; color: #333; font-size: 22px; }
+    #login-screen h2 { margin-bottom: 20px; color: #333; }
     .login-group { margin-bottom: 15px; text-align: left; }
-    .login-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 13px; color: #333; }
+    .login-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 13px; }
     .login-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
     .btn-login { background: #004080; color: white; width: 100%; padding: 12px; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-    .btn-login:hover { background: #003366; }
     .error-msg { color: #dc3545; font-size: 13px; margin-top: 10px; display: none; }
 
     /* EDITOR & TABS */
-    #editor-screen { display: none; width: 100%; max-width: 1350px; padding: 20px; background: #f4f6f9; min-height: 100vh; position: absolute; top: 0; left: 0; }
+    #editor-screen { display: none; width: 100%; max-width: 1350px; padding: 20px; }
     .navbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; }
     .nav-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
     .tab-btn { padding: 8px 16px; border: none; background: #e9ecef; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; color: #495057; }
@@ -103,7 +84,7 @@
     .text-left { text-align: left; }
     .text-right { text-align: right; }
 
-    .condiciones-box { font-size: 10px; color: #555; margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 10px; }
+    .condiciones-box { font-size: 10px; color: #555; margin-bottom: 20px; border-top: 1px solid #eee; paddingTop: 10px; }
     .firmas-container { display: flex; justify-content: space-between; margin-top: 30px; }
     .tabla-historial { width: 100%; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
     .tabla-historial th, .tabla-historial td { padding: 10px; border: 1px solid #dee2e6; font-size: 12px; text-align: center; }
@@ -115,19 +96,19 @@
 </head>
 <body>
 
-  <!-- LOGIN CENTRADO -->
+  <!-- LOGIN -->
   <div id="login-screen">
     <h2>🔐 Iniciar Sesión</h2>
     <div class="login-group">
       <label>Usuario:</label>
-      <input type="text" id="userInput" placeholder="Ej: operador">
+      <input type="text" id="userInput" placeholder="Ej: admin">
     </div>
     <div class="login-group">
       <label>Contraseña:</label>
-      <input type="password" id="passInput" placeholder="Ej: 123">
+      <input type="password" id="passInput" placeholder="Ej: 1234">
     </div>
     <button class="btn-login" onclick="verificarLogin()">Ingresar</button>
-    <p id="errorMsg" class="error-msg">Usuario o contraseña incorrectos</p>
+    <p id="errorMsg" class="error-msg">Usuario o contraseña incorrectos (admin / 1234)</p>
   </div>
 
   <!-- EDITOR & NAVEGACIÓN -->
@@ -165,56 +146,56 @@
           <h3 style="margin-top: 25px; font-size: 14px;">Costos Indirectos (AIU)</h3>
           <div style="display: flex; gap: 8px;">
             <div class="form-group" style="flex:1;"><label>Admin %</label><input type="number" id="c-pAdmin" value="5" oninput="actualizarCotizacion()"></div>
-            <div class="form-group" style="flex:1;"><label>Imprev %</label><input type="number" id="c-pImprev" value="2" oninput="actualizarCotizacion()"></div>
-            <div class="form-group" style="flex:1;"><label>Util %</label><input type="number" id="c-pUtil" value="5" oninput="actualizarCotizacion()"></div>
+            <div class="form-group" style="flex:1;"><label>Imprev %</label><input type="number" id="c-pImprev" value="7" oninput="actualizarCotizacion()"></div>
+            <div class="form-group" style="flex:1;"><label>Util %</label><input type="number" id="c-pUtil" value="3" oninput="actualizarCotizacion()"></div>
           </div>
-
-          <button class="btn-accion" style="margin-top:20px;" onclick="guardarYDescargarCotizacion()">💾 Guardar y Descargar PDF</button>
+          <div class="form-group">
+            <label>IVA sobre Utilidad % (Establecido por Ley)</label>
+            <input type="number" id="c-pIva" value="19" readonly style="background-color: #e9ecef; font-weight: bold; cursor: not-allowed;" title="Por ley en Colombia, el IVA en contratos AIU es del 19% sobre la utilidad">
+          </div>
         </div>
 
         <div class="preview-panel">
+          <button class="btn-accion" onclick="guardarYDescargarCotizacion()">📥 Guardar y Descargar Cotización PDF</button>
+          
           <div id="cotizacion-pdf" class="documento-pdf">
             <div class="pdf-header">
               <div style="display: flex; align-items: center; gap: 12px;">
                 <img src="/Logo EuclidesR.png" alt="Logo" style="height: 55px; object-fit: contain;">
                 <div class="empresa-info">
                   <h1>EUCLIDES GONZALEZ RODRIGUEZ</h1>
-                  <p>NIT: 77.189.015-4 | Tel: 314 2130709</p>
+                  <p>NIT: 77.185015-4 | Tel: 314 2130708</p>
                   <p>Bogotá D.C., Colombia</p>
                 </div>
               </div>
               <div class="cotizacion-titulo-box">
                 <h2>PROPUESTA COMERCIAL</h2>
                 <p id="lblNumCot">COT-2026-001</p>
-                <p id="lblFechaCot">Fecha: </p>
+                <p id="lblFechaCot">Fecha: --/--/----</p>
               </div>
             </div>
 
             <div class="datos-cliente-box">
-              <div>
-                <p><strong>CLIENTE:</strong> <span id="p-cliente">EDIFICIO TORRE CORAL P.H.</span></p>
-                <p><strong>ATENCIÓN:</strong> <span id="p-contacto">Administración</span></p>
-              </div>
-              <div>
-                <p><strong>PROYECTO:</strong> <span id="p-titulo">MANTENIMIENTO</span></p>
-              </div>
+              <div><strong>Cliente:</strong> <span id="p-cliente">-</span></div>
+              <div><strong>Atención:</strong> <span id="p-contacto">-</span></div>
+              <div><strong>Proyecto:</strong> <span id="p-titulo">-</span></div>
+              <div><strong>Validez:</strong> 30 Días</div>
             </div>
 
             <table>
               <thead>
                 <tr class="header-blue">
-                  <th colspan="3" id="p-titulotabla">MANTENIMIENTO</th>
+                  <th colspan="5" id="p-titulotabla">DESCRIPCIÓN DEL PROYECTO</th>
                 </tr>
-                <tr style="background: #f1f3f5; font-size: 11px;">
-                  <th style="text-align: left; padding-left: 10px;">DESCRIPCIÓN</th>
-                  <th style="width: 50px;">UND</th>
-                  <th style="width: 50px;">CANT</th>
-                  <th style="width: 90px; text-align: right;">V/UNITARIO</th>
-                  <th style="width: 90px; text-align: right;">V/PARCIAL</th>
+                <tr class="row-gray">
+                  <th style="width: 42%;">DESCRIPCIÓN</th>
+                  <th style="width: 10%;">UND</th>
+                  <th style="width: 10%;">CANT</th>
+                  <th style="width: 19%;">V/UNITARIO</th>
+                  <th style="width: 19%;">V/PARCIAL</th>
                 </tr>
               </thead>
-              <tbody id="tabla-body">
-              </tbody>
+              <tbody id="tabla-body"></tbody>
             </table>
 
             <div class="condiciones-box">
@@ -226,7 +207,7 @@
                 <img src="/Firma EuclidesR.png" alt="Firma" style="height: 45px; object-fit: contain; margin-bottom: -10px; display: block; margin-left: auto; margin-right: auto;">
                 <div style="border-bottom: 1px solid #333; margin-bottom: 5px;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;">Euclides Gonzalez Rodriguez</p>
-                <p style="margin: 0; font-size: 10px; color: #555;">NIT: 77.189.015-4</p>
+                <p style="margin: 0; font-size: 10px; color: #555;">NIT: 77.185015-4</p>
               </div>
               <div style="text-align: center; width: 45%;">
                 <div style="border-bottom: 1px solid #333; margin-top: 35px; margin-bottom: 5px;"></div>
@@ -240,28 +221,29 @@
       </div>
     </div>
 
-    <!-- PESTAÑA 2: LISTA DE COTIZACIONES -->
+    <!-- PESTAÑA 2: COTIZACIONES CREADAS -->
     <div id="lista-cot" class="tab-content">
-      <h2>📋 Listado de Cotizaciones Guardadas</h2>
-      <button class="btn" style="background:#17a2b8; color:white; margin-bottom: 15px;" onclick="cargarCotizacionesNoAprobadasBD()">Filtrar No Aprobadas</button>
-      <button class="btn" style="background:#6c757d; color:white; margin-bottom: 15px;" onclick="cargarCotizacionesBD()">Mostrar Todas</button>
-      <div style="overflow-x: auto;">
-        <table class="tabla-historial">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Cliente</th>
-              <th>Título</th>
-              <th>Fecha</th>
-              <th>Total</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tabla-cotizaciones-guardadas">
-          </tbody>
-        </table>
+      <h2>📋 Historial de Cotizaciones Creadas</h2>
+      
+      <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+        <button class="btn" style="background: #004080; color: white;" onclick="cargarCotizacionesBD()">🔄 Cargar Todas de la BD</button>
+        <button class="btn" style="background: #ffc107; color: #212529;" onclick="cargarCotizacionesNoAprobadasBD()">⚠️ Extraer Cotizaciones No Aprobadas</button>
       </div>
+
+      <table class="tabla-historial">
+        <thead>
+          <tr>
+            <th>Nº Cotización</th>
+            <th>Cliente</th>
+            <th>Proyecto</th>
+            <th>Fecha</th>
+            <th>Valor Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-cotizaciones-guardadas"></tbody>
+      </table>
     </div>
 
     <!-- PESTAÑA 3: CREAR CUENTA DE COBRO -->
@@ -269,73 +251,51 @@
       <div class="container">
         <div class="form-panel">
           <h2>💰 Generar Cuenta de Cobro</h2>
+          <div class="form-group"><label>Seleccionar Cotización Aprobada:</label><select id="select-cot-aprobada" onchange="cargarDatosCotizacionEnCobro()"></select></div>
+          <div class="form-group"><label>Nº Cuenta de Cobro:</label><input type="text" id="cobro-num" value="CC-2026-001"></div>
+          <div class="form-group"><label>Concepto / Detalle:</label><input type="text" id="cobro-concepto" value="Pago parcial o total por concepto de ejecución de servicios."></div>
           <div class="form-group">
-            <label>Seleccionar Cotización Aprobada:</label>
-            <select id="select-cot-aprobada" onchange="cargarDatosCotizacionEnCobro()">
-              <option value="">-- Seleccione --</option>
-            </select>
+            <label>Valor a Cobrar (COP):</label>
+            <input type="number" id="cobro-valor" value="0" oninput="actualizarVistaCobroManual()">
+            <small id="punteo-cobro" style="color: #004080; font-weight: bold; font-size: 12px; display: block; margin-top: 3px;">$ 0</small>
           </div>
-          <div class="form-group">
-            <label>Tipo de Cobro:</label>
-            <select id="cobro-tipo" onchange="actualizarVistaCobroManual()">
-              <option value="Anticipo">Anticipo</option>
-              <option value="Pago Final">Pago Final</option>
-              <option value="Pago Único">Pago Único</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Fecha de Emisión:</label>
-            <input type="date" id="cobro-fecha" onchange="actualizarVistaCobroManual()">
-          </div>
-          <div class="form-group">
-            <label>Concepto Detallado:</label>
-            <textarea id="cobro-concepto" rows="4" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; font-size:14px;" oninput="actualizarVistaCobroManual()"></textarea>
-          </div>
-          <div class="form-group">
-            <label>Valor a Cobrar ($):</label>
-            <input type="number" id="cobro-valor" oninput="actualizarVistaCobroManual()">
-            <span id="punteo-cobro" style="font-size: 12px; font-weight: bold; color: #004080;">$ 0</span>
-          </div>
-
-          <button class="btn-accion" style="margin-top:15px;" onclick="guardarYDescargarCuentaCobro()">💾 Guardar y Generar PDF</button>
+          <div class="form-group"><label>Fecha de Cobro:</label><input type="date" id="cobro-fecha"></div>
         </div>
-
         <div class="preview-panel">
+          <button class="btn-accion" onclick="guardarYDescargarCuentaCobro()">📥 Guardar y Descargar Cuenta de Cobro PDF</button>
+          
           <div id="cuentacobro-pdf" class="documento-pdf">
             <div class="pdf-header">
               <div style="display: flex; align-items: center; gap: 12px;">
                 <img src="/Logo EuclidesR.png" alt="Logo" style="height: 55px; object-fit: contain;">
                 <div class="empresa-info">
                   <h1>EUCLIDES GONZALEZ RODRIGUEZ</h1>
-                  <p>NIT: 77.189.015-4 | Tel: 314 2130709</p>
-                  <p>Bogotá D.C., Colombia</p>
+                  <p>NIT: 77.185015-4 | Tel: 314 2130708</p>
                 </div>
               </div>
               <div class="cotizacion-titulo-box">
                 <h2>CUENTA DE COBRO</h2>
-                <p id="lblNumNumCobroPDF">CC-2026-001</p>
-                <p id="lblFechaCobroPDF">Fecha: </p>
+                <p id="lblNumCobroPDF">CC-2026-001</p>
+                <p id="lblFechaCobroPDF">Fecha: --/--/----</p>
               </div>
             </div>
-
             <div class="datos-cliente-box">
-              <div>
-                <p><strong>DEBE A:</strong> EUCLIDES GONZALEZ RODRIGUEZ</p>
-                <p><strong>CLIENTE:</strong> <span id="cobro-p-cliente">--</span></p>
-              </div>
-              <div>
-                <p><strong>REF. COTIZACIÓN:</strong> <span id="cobro-p-ref">--</span></p>
-                <p><strong>TIPO:</strong> <span id="cobro-p-tipo">Anticipo</span></p>
-              </div>
+              <div><strong>Debe a:</strong> Euclides Gonzalez Rodriguez</div>
+              <div><strong>NIT:</strong> 77.185015-4</div>
+              <div><strong>Cliente:</strong> <span id="cobro-p-cliente">-</span></div>
+              <div><strong>Ref. Cotización:</strong> <span id="cobro-p-ref">-</span></div>
+            </div>
+            
+            <div style="margin: 20px 0; padding: 15px; border: 1px solid #d0d0d0; background: #fafafa; border-radius: 4px; font-size: 12px; line-height: 1.6;">
+              <p style="margin: 0 0 10px 0;">Respetados señores,</p>
+              <p style="margin: 0 0 10px 0;"><strong><span id="cobro-p-cliente-2">-</span></strong></p>
+              <p id="cobro-p-concepto" style="margin: 0; color: #333; text-align: justify; word-break: break-word;">
+                Por medio de la presente, me dirijo a ustedes para efectuar el cobro correspondiente a los servicios prestados de acuerdo con la propuesta comercial aprobada.
+              </p>
             </div>
 
-            <div style="margin-bottom: 25px; font-size: 13px; line-height: 1.6;">
-              <p><strong>Concepto:</strong></p>
-              <p id="cobro-p-concepto" style="background: #f8f9fa; padding: 12px; border-radius: 4px; border: 1px solid #e9ecef;">Seleccione una cotización para ver el detalle del cobro.</p>
-            </div>
-
-            <div style="text-align: right; margin-bottom: 30px; font-size: 16px; font-weight: bold; background: #e9ecef; padding: 12px; border-radius: 4px;">
-              VALOR TOTAL A PAGAR: <span id="cobro-p-valor" style="color: #004080;">$ 0</span>
+            <div style="text-align: right; font-size: 15px; font-weight: bold; margin: 20px 0; background: #dbe4f0; padding: 12px; border-radius: 4px; color: #003366;">
+              VALOR TOTAL A COBRAR: <span id="cobro-p-valor">$ 0</span>
             </div>
 
             <div class="firmas-container" style="margin-top: 40px; display: flex; justify-content: space-between;">
@@ -343,11 +303,11 @@
                 <img src="/Firma EuclidesR.png" alt="Firma" style="height: 45px; object-fit: contain; margin-bottom: -10px; display: block; margin-left: auto; margin-right: auto;">
                 <div style="border-bottom: 1px solid #333; margin-bottom: 5px;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;">Euclides Gonzalez Rodriguez</p>
-                <p style="margin: 0; font-size: 10px; color: #555;">NIT: 77.189.015-4</p>
+                <p style="margin: 0; font-size: 10px; color: #555;">NIT: 77.185015-4</p>
               </div>
               <div style="text-align: center; width: 45%;">
                 <div style="border-bottom: 1px solid #333; margin-top: 35px; margin-bottom: 5px;"></div>
-                <p style="margin: 0; font-size: 11px; font-weight: bold;"><span id="cobro-p-cliente-2">Aprobado / Cliente</span></p>
+                <p style="margin: 0; font-size: 11px; font-weight: bold;"><span id="cobro-p-cliente-3">Aprobado / Cliente</span></p>
                 <p style="margin: 0; font-size: 10px; color: #555;">NIT / C.C.</p>
               </div>
             </div>
@@ -356,49 +316,49 @@
       </div>
     </div>
 
-    <!-- PESTAÑA 4: CONTROL CONTABLE (COBROS) -->
+    <!-- PESTAÑA 4: CONTROL CONTABLE -->
     <div id="lista-cobros" class="tab-content">
-      <h2>📊 Control Contable - Cuentas de Cobro</h2>
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <div>
-          <button class="btn" style="background:#28a745; color:white;" onclick="cargarCuentasCobroPagadasBD()">Filtrar Pagadas</button>
-          <button class="btn" style="background:#6c757d; color:white; margin-left: 5px;" onclick="cargarCuentasCobroBD()">Mostrar Todas</button>
+      <h2>📊 Control Contable y Cuentas de Cobro</h2>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px 15px; border-radius: 6px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn" style="background: #004080; color: white; padding: 10px 14px;" onclick="cargarCuentasCobroBD()">🔄 Ver Todas</button>
+          <button class="btn" style="background: #17a2b8; color: white; padding: 10px 14px;" onclick="cargarCuentasCobroPagadasBD()">✅ Extraer Pagadas</button>
         </div>
-        <div style="background: white; padding: 10px 15px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-weight: bold;">
-          Total Recaudado (Pagado): <span id="lbl-total-pagado" style="color: #28a745; font-size: 16px;">$ 0</span>
+        <div style="font-size: 14px; font-weight: bold; color: #004080;">
+          Total Recaudado (Pagadas): <span id="lbl-total-pagado" style="color: #28a745; font-size: 16px;">$ 0</span>
         </div>
       </div>
-      <div style="overflow-x: auto;">
-        <table class="tabla-historial">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Cliente</th>
-              <th>Concepto</th>
-              <th>Fecha</th>
-              <th>Valor</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tabla-cobros-guardados">
-          </tbody>
-        </table>
-      </div>
+
+      <table class="tabla-historial">
+        <thead>
+          <tr>
+            <th>Nº Cuenta</th>
+            <th>Cliente</th>
+            <th>Concepto</th>
+            <th>Fecha</th>
+            <th>Valor Cobrado</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-cobros-guardados"></tbody>
+      </table>
     </div>
 
   </div>
 
-  <!-- MODAL DE DETALLE -->
-  <div id="modal-detalle" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
-    <div style="background: white; padding: 25px; border-radius: 8px; width: 100%; max-width: 500px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-      <h3 id="modal-titulo" style="margin-top: 0; color: #004080;">Detalle</h3>
-      <div id="modal-contenido" style="margin-bottom: 20px; font-size: 14px; line-height: 1.5;"></div>
-      <button class="btn" style="background: #6c757d; color: white; width: 100%;" onclick="cerrarModalDetalle()">Cerrar</button>
+  <!-- VENTANA MODAL -->
+  <div id="modal-detalle" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index: 1000;">
+    <div style="background:white; padding:25px; border-radius:8px; width:90%; max-width:600px; box-shadow:0 4px 15px rgba(0,0,0,0.2); position:relative;">
+      <h3 id="modal-titulo" style="color: #004080; margin-top:0;">Detalles del Registro</h3>
+      <div id="modal-contenido" style="font-size: 13px; line-height: 1.6; color: #333; margin-bottom: 20px; max-height: 60vh; overflow-y: auto;"></div>
+      <div style="text-align: right;">
+        <button class="btn" style="background: #6c757d; color: white; padding: 8px 16px;" onclick="cerrarModalDetalle()">Cerrar</button>
+      </div>
     </div>
   </div>
 
-  <!-- Carga del script principal como módulo para Vite -->
   <script type="module" src="/src/app.js"></script>
 </body>
 </html>

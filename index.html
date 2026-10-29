@@ -218,27 +218,21 @@
               <p><strong>Condiciones de Pago:</strong> 50% anticipo, 50% contra entrega.</p>
             </div>
 
-            <!-- FIRMA PERFECTAMENTE POSICIONADA SOBRE LA LÍNEA -->
-            <div class="firmas-container" style="margin-top: 25px; display: flex; justify-content: space-between;">
+            <!-- FIRMA PERFECTAMENTE ALINEADA SIN POSITION ABSOLUTE -->
+            <div class="firmas-container" style="margin-top: 30px; display: flex; justify-content: space-between;">
               
               <!-- Columna Izquierda (Tu Firma) -->
-              <div style="text-align: center; width: 45%; position: relative;">
-                <!-- Contenedor absoluto para la firma centrada exactamente sobre la línea -->
-                <div style="position: absolute; bottom: 15px; left: 0; right: 0; display: flex; justify-content: center;">
-                  <img src="/Firma EuclidesR.png" alt="Firma" style="height: 50px; object-fit: contain;">
-                </div>
-                
-                <!-- Línea de firma -->
-                <div style="border-bottom: 1px solid #333; margin-top: 45px; margin-bottom: 5px; width: 100%;"></div>
-                
-                <!-- Datos -->
+              <div style="text-align: center; width: 45%;">
+                <img src="/Firma EuclidesR.png" alt="Firma" style="height: 50px; object-fit: contain; display: block; margin: 0 auto -20px auto; position: relative; z-index: 2;">
+                <div style="border-bottom: 1px solid #333; margin-top: 5px; margin-bottom: 5px; width: 100%;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;">Euclides Gonzalez Rodriguez</p>
                 <p style="margin: 0; font-size: 10px; color: #555;">NIT: 77.185015-4</p>
               </div>
 
               <!-- Columna Derecha (Cliente) -->
-              <div style="text-align: center; width: 45%; position: relative;">
-                <div style="border-bottom: 1px solid #333; margin-top: 45px; margin-bottom: 5px; width: 100%;"></div>
+              <div style="text-align: center; width: 45%;">
+                <div style="height: 50px; margin-bottom: -20px;"></div>
+                <div style="border-bottom: 1px solid #333; margin-top: 5px; margin-bottom: 5px; width: 100%;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;">Aceptado (Cliente):</p>
                 <p style="margin: 0; font-size: 10px; color: #555;">Firma y Sello</p>
               </div>
@@ -322,19 +316,23 @@
             <div style="text-align: right; font-size: 15px; font-weight: bold; margin: 20px 0; background: #dbe4f0; padding: 12px; border-radius: 4px; color: #003366;">
               VALOR TOTAL A COBRAR: <span id="cobro-p-valor">$ 0</span>
             </div>
-            <div class="firmas-container" style="margin-top: 15px; display: flex; justify-content: space-between;">
-              <div style="text-align: center; width: 45%; position: relative;">
-                <img src="/Firma EuclidesR.png" alt="Firma" style="height: 48px; object-fit: contain; display: block; margin: 0 auto -20px auto; position: relative; z-index: 5;">
-                <div style="border-bottom: 1px solid #333; margin-bottom: 5px; width: 100%;"></div>
+
+            <!-- FIRMA PERFECTAMENTE ALINEADA EN CUENTA DE COBRO -->
+            <div class="firmas-container" style="margin-top: 25px; display: flex; justify-content: space-between;">
+              <div style="text-align: center; width: 45%;">
+                <img src="/Firma EuclidesR.png" alt="Firma" style="height: 48px; object-fit: contain; display: block; margin: 0 auto -20px auto; position: relative; z-index: 2;">
+                <div style="border-bottom: 1px solid #333; margin-top: 5px; margin-bottom: 5px; width: 100%;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;">Euclides Gonzalez Rodriguez</p>
                 <p style="margin: 0; font-size: 10px; color: #555;">NIT: 77.185015-4</p>
               </div>
               <div style="text-align: center; width: 45%;">
-                <div style="border-bottom: 1px solid #333; margin-top: 33px; margin-bottom: 5px; width: 100%;"></div>
+                <div style="height: 48px; margin-bottom: -20px;"></div>
+                <div style="border-bottom: 1px solid #333; margin-top: 5px; margin-bottom: 5px; width: 100%;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;"><span id="cobro-p-cliente-3">Aprobado / Cliente</span></p>
                 <p style="margin: 0; font-size: 10px; color: #555;">NIT / C.C.</p>
               </div>
             </div>
+
           </div>
         </div>
       </div>

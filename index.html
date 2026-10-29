@@ -175,13 +175,16 @@
         <div class="preview-panel">
           <div id="cotizacion-pdf" class="documento-pdf">
             <div class="pdf-header">
-              <div class="empresa-info">
-                <h1>EUCLIDES GONZALEZ LEAL</h1>
-                <p>NIT / C.C. 1.018.435.981-0</p>
-                <p>Servicios de Ingeniería y Mantenimiento</p>
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <img src="/Logo EuclidesR.png" alt="Logo" style="height: 60px; object-fit: contain;">
+                <div class="empresa-info">
+                  <h1>EUCLIDES GONZALEZ RODRIGUEZ</h1>
+                  <p>NIT: 77.189.015-4 | Tel: 314 2130709</p>
+                  <p>Bogotá D.C., Colombia</p>
+                </div>
               </div>
               <div class="cotizacion-titulo-box">
-                <h2>COTIZACIÓN</h2>
+                <h2>PROPUESTA COMERCIAL</h2>
                 <p id="lblNumCot">COT-2026-001</p>
                 <p id="lblFechaCot">Fecha: </p>
               </div>
@@ -216,6 +219,21 @@
                 <li>Forma de pago: Según acuerdo previo o presentación de cuenta de cobro.</li>
               </ul>
             </div>
+
+            <div class="firmas-container" style="margin-top: 40px; display: flex; justify-content: space-between;">
+              <div style="text-align: center; width: 45%;">
+                <img src="/Firma EuclidesR.png" alt="Firma" style="height: 50px; object-fit: contain; margin-bottom: -10px; display: block; margin-left: auto; margin-right: auto;">
+                <div style="border-bottom: 1px solid #333; margin-bottom: 5px;"></div>
+                <p style="margin: 0; font-size: 11px; font-weight: bold;">Euclides Gonzalez Rodriguez</p>
+                <p style="margin: 0; font-size: 10px; color: #555;">NIT: 77.189.015-4</p>
+              </div>
+              <div style="text-align: center; width: 45%;">
+                <div style="border-bottom: 1px solid #333; margin-top: 40px; margin-bottom: 5px;"></div>
+                <p style="margin: 0; font-size: 11px; font-weight: bold;">Aceptado (Cliente):</p>
+                <p style="margin: 0; font-size: 10px; color: #555;">Firma y Sello</p>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -284,10 +302,13 @@
         <div class="preview-panel">
           <div id="cuentacobro-pdf" class="documento-pdf">
             <div class="pdf-header">
-              <div class="empresa-info">
-                <h1>EUCLIDES GONZALEZ LEAL</h1>
-                <p>NIT / C.C. 1.018.435.981-0</p>
-                <p>Servicios de Ingeniería y Mantenimiento</p>
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <img src="/Logo EuclidesR.png" alt="Logo" style="height: 60px; object-fit: contain;">
+                <div class="empresa-info">
+                  <h1>EUCLIDES GONZALEZ RODRIGUEZ</h1>
+                  <p>NIT: 77.189.015-4 | Tel: 314 2130709</p>
+                  <p>Bogotá D.C., Colombia</p>
+                </div>
               </div>
               <div class="cotizacion-titulo-box">
                 <h2>CUENTA DE COBRO</h2>
@@ -298,7 +319,7 @@
 
             <div class="datos-cliente-box">
               <div>
-                <p><strong>DEBE A:</strong> EUCLIDES GONZALEZ LEAL</p>
+                <p><strong>DEBE A:</strong> EUCLIDES GONZALEZ RODRIGUEZ</p>
                 <p><strong>CLIENTE:</strong> <span id="cobro-p-cliente">--</span></p>
               </div>
               <div>
@@ -316,14 +337,15 @@
               VALOR TOTAL A PAGAR: <span id="cobro-p-valor" style="color: #004080;">$ 0</span>
             </div>
 
-            <div class="firmas-container" style="margin-top: 50px; display: flex; justify-content: space-between;">
+            <div class="firmas-container" style="margin-top: 40px; display: flex; justify-content: space-between;">
               <div style="text-align: center; width: 45%;">
-                <div style="border-bottom: 1px solid #333; margin-bottom: 5px; height: 40px;"></div>
-                <p style="margin: 0; font-size: 11px; font-weight: bold;">EUCLIDES GONZALEZ LEAL</p>
-                <p style="margin: 0; font-size: 10px; color: #555;">C.C. 1.018.435.981-0</p>
+                <img src="/Firma EuclidesR.png" alt="Firma" style="height: 50px; object-fit: contain; margin-bottom: -10px; display: block; margin-left: auto; margin-right: auto;">
+                <div style="border-bottom: 1px solid #333; margin-bottom: 5px;"></div>
+                <p style="margin: 0; font-size: 11px; font-weight: bold;">Euclides Gonzalez Rodriguez</p>
+                <p style="margin: 0; font-size: 10px; color: #555;">NIT: 77.189.015-4</p>
               </div>
               <div style="text-align: center; width: 45%;">
-                <div style="border-bottom: 1px solid #333; margin-bottom: 5px; height: 40px;"></div>
+                <div style="border-bottom: 1px solid #333; margin-top: 40px; margin-bottom: 5px;"></div>
                 <p style="margin: 0; font-size: 11px; font-weight: bold;"><span id="cobro-p-cliente-2">Aprobado / Cliente</span></p>
                 <p style="margin: 0; font-size: 10px; color: #555;">NIT / C.C.</p>
               </div>
@@ -375,10 +397,7 @@
     </div>
   </div>
 
+  <!-- Carga del script principal como módulo para Vite -->
   <script type="module" src="/src/app.js"></script>
- 
 </body>
-
-
-
 </html>
